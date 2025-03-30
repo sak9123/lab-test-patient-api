@@ -3,7 +3,6 @@ package mid
 import (
 	"fmt"
 	"hospitalApi/cmd/config"
-	"hospitalApi/pkg/helper"
 	"net/http"
 	"strings"
 
@@ -72,14 +71,4 @@ func validateToken(tokenString string) (isValid bool, username string, err error
 		return false, "", fmt.Errorf("Invalid token")
 	}
 
-}
-
-func protectedHandler(w *gin.ResponseWriter, r *http.Request) {
-	username := r.Context().Value("username").(string)
-
-	response := map[string]string{
-		"message": fmt.Sprintf("Protected resource accessed successfully by user: %s", username),
-	}
-
-	helper.ApiResponse(w, http.StatusOK, response)
 }
