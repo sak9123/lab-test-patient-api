@@ -1,0 +1,68 @@
+API/
+├─ .vscode/
+│  └─ launch.json
+├─ cmd/
+│  ├─ config/
+│  │  └─ config.go
+│  └─ main.go
+├─ pkg/
+│  ├─ api/
+│  │  ├─ infrastructure/
+│  │  │  ├─ handler.go
+│  │  │  ├─ helper.go
+│  │  │  ├─ repository.go
+│  │  │  └─ service.go
+│  │  └─ api.go
+│  ├─ entity/
+│  │  ├─ context.go
+│  │  ├─ hospital.go
+│  │  ├─ patient.go
+│  │  └─ staff.go
+│  ├─ errs/
+│  │  ├─ errors_test.go
+│  │  └─ errors.go
+│  ├─ handler/
+│  │  ├─ common.go
+│  │  ├─ constant.go
+│  │  ├─ patient_handler.go
+│  │  └─ staff_handler.go
+│  ├─ helper/
+│  │  └─ common.go
+│  ├─ logs/
+│  │  └─ logs.go
+│  ├─ mocks/
+│  │  ├─ ICommon.go
+│  │  ├─ IPatientService.go
+│  │  ├─ IPatientsRepository.go
+│  │  ├─ IStaffService.go
+│  │  └─ IStaffsRepository.go
+│  ├─ model/
+│  │  ├─ patient_criteria.go
+│  │  ├─ patient.go
+│  │  ├─ staff_criteria.go
+│  │  └─ staff.go
+│  ├─ repository/
+│  │  ├─ common.go
+│  │  ├─ patients_repository.go
+│  │  └─ staffs_repository.go
+│  ├─ service/
+│  │  ├─ common.go
+│  │  ├─ patient_service_test.go
+│  │  ├─ patient_service.go
+│  │  ├─ staff_service_test.go
+│  │  └─ staff_service.go
+│  └─ web/
+│     └─ mid/
+│        ├─ auth.go
+│        └─ cros.go
+├─ scripts/
+│  ├─ local/
+│  │  └─ Dockerfile
+│  ├─ nginx/
+│  │  └─ default.conf
+│  └─ postgres/
+│     └─ init-user-db.sh
+├─ docker-compose.yml
+├─ go.mod
+├─ go.sum
+└─ project_structure.text

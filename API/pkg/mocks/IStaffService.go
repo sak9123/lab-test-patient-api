@@ -45,17 +45,17 @@ func (_m *IStaffService) Create(input model.Staff) (bool, *errs.Error) {
 	return r0, r1
 }
 
-// IsExistsUsername provides a mock function with given fields: username
-func (_m *IStaffService) IsExistsUsername(username string) *errs.Error {
-	ret := _m.Called(username)
+// IsExistsUsername provides a mock function with given fields: username, hospitalCode
+func (_m *IStaffService) IsExistsUsername(username string, hospitalCode string) *errs.Error {
+	ret := _m.Called(username, hospitalCode)
 
 	if len(ret) == 0 {
 		panic("no return value specified for IsExistsUsername")
 	}
 
 	var r0 *errs.Error
-	if rf, ok := ret.Get(0).(func(string) *errs.Error); ok {
-		r0 = rf(username)
+	if rf, ok := ret.Get(0).(func(string, string) *errs.Error); ok {
+		r0 = rf(username, hospitalCode)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*errs.Error)

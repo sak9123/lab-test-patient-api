@@ -18,14 +18,15 @@ type Patient struct {
 	MiddleNameEN *string `gorm:"type:VARCHAR(200)"`
 	LastNameEN   *string `gorm:"type:VARCHAR(200)"`
 	DateOfBirth  *time.Time
-	PatientHN    *string `gorm:"type:VARCHAR(10)"`
-	NationalId   *string `gorm:"type:VARCHAR(13)"`
-	PassportId   *string `gorm:"type:VARCHAR(20)"`
-	PhoneNumber  *string `gorm:"type:VARCHAR(25)"`
-	Email        *string `gorm:"type:VARCHAR(100)"`
-	Gender       *string `gorm:"type:CHAR(1)"`
-	HospitalCode *string `gorm:"type:CHAR(2)"`
-	CreatedBy    *string `gorm:"type:VARCHAR(100)"`
+	PatientHN    *string  `gorm:"type:VARCHAR(10)"`
+	NationalId   *string  `gorm:"type:VARCHAR(13)"`
+	PassportId   *string  `gorm:"type:VARCHAR(20)"`
+	PhoneNumber  *string  `gorm:"type:VARCHAR(25)"`
+	Email        *string  `gorm:"type:VARCHAR(100)"`
+	Gender       *string  `gorm:"type:CHAR(1)"`
+	HospitalCode *string  `gorm:"not null;type:CHAR(2);"`
+	Hospital     Hospital `gorm:"foreignKey:HospitalCode;references:ID"`
+	CreatedBy    *string  `gorm:"type:VARCHAR(100)"`
 	CreatedAt    *time.Time
 	UpdatedAt    *time.Time
 	UpdatedBy    *string `gorm:"type:VARCHAR(100)"`

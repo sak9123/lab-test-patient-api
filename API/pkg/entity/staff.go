@@ -5,11 +5,12 @@ import (
 )
 
 type Staff struct {
-	ID           uint    `gorm:"primarykey"`
-	Username     string  `gorm:"unique;not null;type:VARCHAR(100)"`
-	Password     string  `gorm:"unique;not null;type:VARCHAR(2000)"`
-	HospitalCode string  `gorm:"unique;not null;type:VARCHAR(2)"`
-	CreatedBy    *string `gorm:"type:VARCHAR(100)"`
+	ID           uint     `gorm:"primarykey"`
+	Username     string   `gorm:"not null;type:VARCHAR(100)"`
+	Password     string   `gorm:"not null;type:VARCHAR(2000)"`
+	HospitalCode string   `gorm:"not null;type:VARCHAR(2)"`
+	Hospital     Hospital `gorm:"foreignKey:HospitalCode;references:ID"`
+	CreatedBy    *string  `gorm:"type:VARCHAR(100)"`
 	CreatedAt    *time.Time
 	UpdatedAt    *time.Time
 	UpdatedBy    *string `gorm:"type:VARCHAR(100)"`

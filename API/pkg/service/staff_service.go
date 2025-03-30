@@ -7,11 +7,12 @@ import (
 	"hospitalApi/pkg/helper"
 	"hospitalApi/pkg/model"
 	"hospitalApi/pkg/repository"
+	"time"
 )
 
 type IStaffService interface {
 	Create(input model.Staff) (isSuccess bool, err *errs.Error)
-	IsExistsUsername(username string) (err *errs.Error)
+	IsExistsUsername(username string, hospitalCode string) (err *errs.Error)
 	Login(input model.StaffCriteria) (result string, err *errs.Error)
 	ValidateSave(input model.Staff) (err *errs.Error)
 	ValidateLogin(input model.StaffCriteria) (err *errs.Error)
@@ -44,16 +45,19 @@ func (s *StaffService) Create(input model.Staff) (isSuccess bool, err *errs.Erro
 		return false, serviceErr
 	}
 
-	serviceErr = s.UseCase.IsExistsUsername(*input.Username)
+	serviceErr = s.UseCase.IsExistsUsername(*input.Username, *input.HospitalCode)
 	if serviceErr != nil {
 		return false, serviceErr
 	}
 
 	password, _ := s.Common.HashPassword(*input.Password)
+	updatedAt := time.Now()
 	entity := entity.Staff{
 		Username:     *input.Username,
 		Password:     password,
 		HospitalCode: *input.HospitalCode,
+		UpdatedBy:    input.Username,
+		UpdatedAt:    &updatedAt,
 	}
 
 	repoErr := s.StaffsRepository.Create(entity)
@@ -80,8 +84,8 @@ func (s *StaffService) ValidateSave(input model.Staff) (err *errs.Error) {
 	return nil
 }
 
-func (s *StaffService) IsExistsUsername(username string) (err *errs.Error) {
-	staffs, repoErr := s.StaffsRepository.Get(model.StaffCriteria{Username: &username})
+func (s *StaffService) IsExistsUsername(username string, hospitalCode string) (err *errs.Error) {
+	staffs, repoErr := s.StaffsRepository.Get(model.StaffCriteria{Username: &username, HospitalCode: &hospitalCode})
 	if repoErr != nil {
 		return errs.NewInternalServerError(repoErr.Error())
 	}
