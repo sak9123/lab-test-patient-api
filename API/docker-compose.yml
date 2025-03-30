@@ -1,0 +1,63 @@
+services:
+  app:
+    platform: linux/amd64
+    build:
+      context: ./
+      dockerfile: ./scripts/local/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=postgres
+      - DATA_SOURCE=host=postgres user=postgres password=root dbname=hospitaldb port=5432 sslmode=disable TimeZone=Asia/bangkok
+      - SECRET_KEY=123-secret-key
+    depends_on:
+      - postgres
+    volumes:
+      - ./cmd/:/go/src/app/cmd
+      - ./pkg/:/go/src/app/pkg
+    restart: always      
+    networks:
+      - my_network # Connect db to the backend-net network  
+      
+  postgres:
+      image: postgres:15-alpine
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: hospitaldb
+        POSTGRES_LISTEN_ADDRESSES: '*'
+      ports:
+        - "5433:5432" # Expose Postgres port for local access (optional for production)
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+        - ./scripts/postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      networks:
+          my_network:
+            ipv4_address: 192.168.1.102  # Static IP address within the custom subnet
+      healthcheck:
+        test: ["CMD", "pg_isready", "-U", "postgres"]
+      restart: always
+      hostname: db-host  # Set the custom hostname for the PostgreSQL container
+     
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80" # Map host port 80 to Nginx container port 80
+    volumes:
+      - ./scripts/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro # Mount Nginx config
+    depends_on:
+      - app
+    networks:
+        my_network:
+          ipv4_address: 192.168.1.101  # Static IP address within the custom subnet
+
+volumes:  # Top-level volumes section
+  postgres_data:  # Define the postgres_data volume
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "192.168.1.0/24"  # Custom subnet for the internal network
